@@ -1,0 +1,14 @@
+# dependencies
+node_modules
+
+# production
+build
+
+# misc
+.idea
+*.iml
+.DS_Store
+.Trashes
+Thumbs.db
+
+npm-debug.log*
