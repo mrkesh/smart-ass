@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import CurrentGame from './component/current-game/current-game';
 import GameSetup from './component/game-setup/game-setup';
-import { loadQuestions } from './controller/game-controller';
+import { createGame } from './controller/game-controller';
 
 const styles = theme => ({
 
@@ -21,7 +21,8 @@ class App extends React.Component {
 
   async onCreation(difficulty, event) {
     event.preventDefault();
-    const questions = await loadQuestions(difficulty);
+    const game = await createGame(difficulty);
+    this.setState({game});
   }
   
   render() {
@@ -30,7 +31,7 @@ class App extends React.Component {
     let component;
 
     if (game) {
-      component = <CurrentGame />
+      component = <CurrentGame game={game} />
     } else {
       component = <GameSetup onCreation={this.onCreation} />
     }
