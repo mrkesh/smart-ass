@@ -9,7 +9,8 @@ module.exports = {
   },
   mode: process.env.NODE_ENV || 'development',
   resolve: {
-    modules: [path.resolve(__dirname, 'src'), 'node_modules']
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
   devServer: {
     contentBase: path.join(__dirname,'src')
@@ -17,12 +18,9 @@ module.exports = {
   module: {
     rules: [
       {
-        // this is so that we can compile any React,
-        // ES6 and above into normal ES5 syntax
-        test: /\.(js|jsx)$/,
-        // we do not want anything from node_modules to be compiled
-        exclude: /node_modules/,
-        use: ['babel-loader']
+        test: [/\.jsx?$/, /\.tsx?$/],
+        use: 'babel-loader',
+        exclude: /node_modules/
       },
       {
         test: /\.css$/,

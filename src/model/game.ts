@@ -3,22 +3,18 @@ import GameCard from './gamecard';
 
 export default class Game {
 
-  constructor(cards) {
-    this._cards = cards;
+  cards: GameCard[]; 
+
+  constructor(cards: GameCard[]) {
+    this.cards = cards;
   }
 
-  get cards() {
-    return this._cards;
-  }
-
-  static fromJSON(jsonData) {
+  static fromJSON(jsonData): Game {
       
     let results = jsonData.results,
-        cards = [],
-        game,
-        i;
+        cards = [];
 
-      for (i = 0; i < results.length; i++) {
+      for (let i = 0; i < results.length; i++) {
         let card = new GameCard(
           results[i].difficulty,
           unescape(results[i].question),
