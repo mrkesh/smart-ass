@@ -1,6 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Countdown from '../countdown/countdown';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -16,20 +17,23 @@ class CurrentCard extends React.Component {
   
   constructor(props) {
     super(props);
+    this.state = {
+      number: this.props.index + 1
+    }
   }
 
-  handleChange() {
-
+  static getDerivedStateFromProps(props, state) {
+    return { number: props.index + 1 };
   }
   
   render() {
 
     const { classes, card } = this.props;
-    debugger;
+    window.console.log('number', this.state.number);
 
     return (
       <div>
-        <Typography component="h1" variant="h5">Question #1</Typography>
+        <Typography component="h1" variant="h5">Question #number</Typography>
         <form className={classes.form}>
           <FormControl>
             <FormLabel component="legend">{card.question}</FormLabel>
@@ -43,6 +47,11 @@ class CurrentCard extends React.Component {
               })}
             </RadioGroup>
           </FormControl>
+          <Countdown
+            key={this.state.number}
+            duration={10000}
+            onCompletion={this.props.onDone}
+          />
           <Button
             className={classes.btn}
             color="primary"

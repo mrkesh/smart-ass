@@ -1,14 +1,10 @@
-import { unescape } from 'lodash';
+import { decode } from 'he';
 import GameCard from './gamecard';
 
 export default class Game {
 
   constructor(cards) {
-    this._cards = cards;
-  }
-
-  get cards() {
-    return this._cards;
+    this.cards = cards;
   }
 
   static fromJSON(jsonData) {
@@ -21,9 +17,11 @@ export default class Game {
       for (i = 0; i < results.length; i++) {
         let card = new GameCard(
           results[i].difficulty,
-          unescape(results[i].question),
-          results[i].correct_answer,
-          results[i].incorrect_answers.concat(results[i].correct_answer)
+          decode(results[i].question),
+          decode(results[i].correct_answer),
+          results[i].incorrect_answers.concat(results[i].correct_answer).map((answer => {
+            return decode(answer);
+          }))
           );
         cards.push(card);
       }

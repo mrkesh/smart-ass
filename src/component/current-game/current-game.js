@@ -13,18 +13,26 @@ class CurrentGame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      card: props.game.cards[0]
+      index: 0
     };
   }
+
+  nextCard = () => {
+    this.setState({index: this.state.index + 1})
+  };
   
   render() {
 
-    const { classes, } = this.props;
+    const { classes, game } = this.props;
+    const { index } = this.state;
+    const card = game.cards[index];
 
     return (
       <Paper className={classes.paper}>
         <CurrentCard
-          card={this.state.card}
+          onDone={this.nextCard}
+          index={index}
+          card={card}
         />
       </Paper>      
     );
