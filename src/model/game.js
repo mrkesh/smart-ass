@@ -1,3 +1,4 @@
+import { shuffle } from 'lodash';
 import { decode } from 'he';
 import GameCard from './gamecard';
 
@@ -26,6 +27,6 @@ export default class Game {
         cards.push(card);
       }
           
-      return new Game(cards);
+      return new Game(shuffle(cards));
   }
 }

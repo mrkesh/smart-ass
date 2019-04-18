@@ -5,7 +5,13 @@ import CurrentCard from '../current-card/current-card';
 
 
 const styles = theme => ({
-
+  paper: {
+    marginTop: theme.spacing.unit * 3,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    padding: theme.spacing.unit * 2,
+    width: '800px'
+  }
 });
 
 class CurrentGame extends React.Component {
@@ -30,6 +36,7 @@ class CurrentGame extends React.Component {
     return (
       <Paper className={classes.paper}>
         <CurrentCard
+          key={card.question}
           onDone={this.nextCard}
           index={index}
           card={card}
