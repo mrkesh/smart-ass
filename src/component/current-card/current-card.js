@@ -1,23 +1,40 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Countdown from '../countdown/countdown';
+import deepOrange from '@material-ui/core/colors/deepOrange';
+import deepPurple from '@material-ui/core/colors/deepPurple';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
+  avatar: {
+    width: theme.spacing.unit * 4,
+    height: theme.spacing.unit * 4,
+    backgroundColor: deepPurple[500],
+    fontSize: theme.spacing.unit * 2,
+    '&.selected': {
+      backgroundColor: deepOrange[500]
+    }
+  },
   btn: {
     display: 'block',
     marginTop: theme.spacing.unit
-  },
-  root: {
-    marginTop: theme.spacing.unit * 3
   }
 });
+
+const QuestionMap = {
+  0: 'A',
+  1: 'B',
+  2: 'C',
+  3: 'D'
+};
 
 class CurrentCard extends React.Component {
   
@@ -25,6 +42,9 @@ class CurrentCard extends React.Component {
     super(props);
     this.state = {
       number: this.props.index + 1,
+      selectedIndex: null,
+      elapsedTime: 0,
+      timeToAnswer: 10000,
       value: null
     }
   }
@@ -33,30 +53,59 @@ class CurrentCard extends React.Component {
     return { number: props.index + 1 };
   }
 
-  handleChange = event => {
-    this.setState({ value: event.target.value });
+  componentDidMount() {
+    this.timer = setInterval(this.progress, 50);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  progress = () => {
+    const { elapsedTime, timeToAnswer } = this.state;
+
+    if (elapsedTime === timeToAnswer) {
+      this.setState({ elapsedTime: 0 });
+      this.props.onDone();
+    } else {
+      this.setState({ elapsedTime: Math.min(elapsedTime + 50, timeToAnswer) });
+    }
+  };
+
+  handleListItemClick = (event, index, choice) => {
+    this.setState({ 
+      selectedIndex: index,
+      value: choice
+    });
   };
   
   render() {
 
-    const { classes, card } = this.props;
+    const { classes, card, onAnswer } = this.props;
+    const { selectedIndex } = this.state;
 
     return (
       <div>
         <Typography component="h1" variant="h5">Question #{this.state.number}</Typography>
-        <form className={classes.form}>
-          <FormControl>
-            <FormLabel component="legend">{card.question}</FormLabel>
-            <RadioGroup
-              aria-label="Choices"
-              name="choices"
-              value={this.state.value}
-              onChange={this.handleChange}
-            >
-              {card.choices.map((choice, index) => {
-                return <FormControlLabel key={index} value={index.toString()} control={<Radio />} label={choice} />
+        <form className={classes.form} onSubmit={onAnswer.bind(this, this.state.value)}>
+          <FormControl fullWidth>
+            <FormLabel component="p">{card.question}</FormLabel>
+            <List component="nav">
+            {card.choices.map((choice, index) => {
+                return (
+                  <ListItem 
+                    button
+                    key={choice}
+                    selected={selectedIndex === index}
+                    onClick={event => this.handleListItemClick(event, index, choice)}>
+                    <ListItemAvatar>
+                      <Avatar className={`${classes.avatar} ${selectedIndex === index ? 'selected' : ''}`}>{QuestionMap[index]}</Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={choice} />
+                  </ListItem>
+                )
               })}
-            </RadioGroup>
+              </List>
           </FormControl>
           <Button
             className={classes.btn}
@@ -68,10 +117,9 @@ class CurrentCard extends React.Component {
               Lock Answer
           </Button>
           <Countdown
-            classes={classes}
             key={this.state.number}
-            duration={10000}
-            onCompletion={this.props.onDone}
+            duration={this.state.timeToAnswer}
+            elapsed={this.state.elapsedTime}
           />
         </form>
       </div>
