@@ -1,5 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { calculateScore } from '../../util/scorebuilder';
 import Paper from '@material-ui/core/Paper';
 import CurrentCard from '../current-card/current-card';
 import Typography from '@material-ui/core/Typography';
@@ -31,12 +32,12 @@ class CurrentGame extends React.Component {
   
   handleAnswer = (answer, time) => {
 
-    const { index, score, streak } = this.state;
+    let { index, score, streak } = this.state;
     const card = this.props.game.cards[index];
     
     if (card.answer === answer) {
-      score++;
-      streak++
+      streak++;
+      score += calculateScore(time, streak);
     } else {
       streak = 0;
     }
@@ -45,7 +46,7 @@ class CurrentGame extends React.Component {
       index: index + 1,
       score,
       streak
-    })
+    });
   };
 
   render() {

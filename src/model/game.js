@@ -10,7 +10,7 @@ export default class Game {
 
   static fromJSON(jsonData) {
       
-    let results = jsonData.results,
+    let results = shuffle(jsonData.results).slice(20),
         cards = [],
         game,
         i;
@@ -27,6 +27,6 @@ export default class Game {
         cards.push(card);
       }
           
-      return new Game(shuffle(cards));
+      return new Game(cards);
   }
 }

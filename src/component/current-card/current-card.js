@@ -87,7 +87,7 @@ class CurrentCard extends React.Component {
     return (
       <div>
         <Typography component="h1" variant="h5">Question #{this.state.number}</Typography>
-        <form className={classes.form} onSubmit={onAnswer.bind(this, this.state.value)}>
+        <form className={classes.form} onSubmit={onAnswer.bind(this, this.state.value, this.state.timeToAnswer - this.state.elapsedTime)}>
           <FormControl fullWidth>
             <FormLabel component="p">{card.question}</FormLabel>
             <List component="nav">
