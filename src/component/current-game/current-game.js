@@ -7,11 +7,13 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   paper: {
-    marginTop: theme.spacing.unit * 3,
     marginLeft: 'auto',
     marginRight: 'auto',
     padding: theme.spacing.unit * 2,
     width: '800px'
+  },
+  score: {
+    padding: theme.spacing.unit
   }
 });
 
@@ -57,7 +59,12 @@ class CurrentGame extends React.Component {
 
     return (
       <div>
-        <Typography component="h1" variant="h5">Score: {this.state.score}</Typography>
+        <Typography 
+          className={classes.score}
+          component="h1" variant="h5"
+        >
+          Score: {this.state.score}
+        </Typography>
         <Paper className={classes.paper}>
           <CurrentCard
             key={card.question}

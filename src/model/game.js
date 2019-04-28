@@ -2,6 +2,8 @@ import { shuffle } from 'lodash';
 import { decode } from 'he';
 import GameCard from './gamecard';
 
+const NUMBER_OF_QUESTIONS = 15;
+
 export default class Game {
 
   constructor(cards) {
@@ -10,7 +12,7 @@ export default class Game {
 
   static fromJSON(jsonData) {
       
-    let results = shuffle(jsonData.results).slice(20),
+    let results = shuffle(jsonData.results).slice(NUMBER_OF_QUESTIONS),
         cards = [],
         game,
         i;
