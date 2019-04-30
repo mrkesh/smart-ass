@@ -1,21 +1,22 @@
+import { get } from 'lodash';
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import store from 'store';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-const styles = theme => ({
-
-});
-
 class HighScoresDialog extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      levels: ['easy', 'medium', 'hard']
+      levels: {
+        'easy': 'Easy',
+        'medium': 'Medium',
+        'hard': 'Hard'
+      }
     }
   }
 
@@ -25,15 +26,18 @@ class HighScoresDialog extends React.Component {
 
   render() {
     const { open } = this.props;
+    const { levels } = this.state;
+    const keys = Object.keys(levels);
 
+    debugger;
     return (
       <Dialog onClose={this.handleClose} aria-labelledby="high-scores-dialog-title" open={open}>
-        <DialogTitle id="high-scores-dialog-title">Set backup account</DialogTitle>
+        <DialogTitle id="high-scores-dialog-title">High scores</DialogTitle>
         <div>
           <List>
-            {this.state.levels.map(level => (
-              <ListItem button key={level}>
-                <ListItemText primary={level} />
+            {keys.map(key => (
+              <ListItem key={key}>
+                <ListItemText primary={levels[key]} secondary={get(store.get('scores'), key, 0)}/>
               </ListItem>
             ))}
           </List>
@@ -43,4 +47,4 @@ class HighScoresDialog extends React.Component {
   }
 }
 
-export default withStyles(styles)(HighScoresDialog);
+export default HighScoresDialog;

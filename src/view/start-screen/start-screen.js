@@ -53,7 +53,7 @@ class StartScreen extends React.Component {
           className={classes.typography}
           component="h1" 
           variant="h5"
-          >
+        >
           Main Menu
         </Typography>
         <Button

@@ -1,16 +1,12 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import CurrentGame from './component/current-game/current-game';
+import CurrentGameScreen from './view/current-game-screen/current-game-screen';
 import GameSetup from './component/game-setup/game-setup';
 import StartScreen from './view/start-screen/start-screen';
 import { createGame } from './controller/game-controller';
+import { setHighScore } from './util/scoreutil';
 
-const styles = theme => ({
-
-});
-
-class App extends React.Component {
+export default class App extends React.Component {
   
   constructor(props) {
     super(props);
@@ -19,12 +15,21 @@ class App extends React.Component {
       setup: false
     }
     this.onCreation = this.onCreation.bind(this);
+    this.onCompletion = this.onCompletion.bind(this);
   }
 
   async onCreation(difficulty, event) {
     event.preventDefault();
     const currentGame = await createGame(difficulty);
     this.setState({currentGame});
+  }
+
+  onCompletion(score) {
+    setHighScore(this.state.currentGame.difficulty, score);
+    this.setState({
+      currentGame: null,
+      setup: false
+    })
   }
 
   handleNewGame = () => {
@@ -37,7 +42,9 @@ class App extends React.Component {
     let component;
 
     if (currentGame) {
-      component = <CurrentGame game={currentGame} />
+      component = <CurrentGameScreen
+        game={currentGame}
+        onCompletion={this.onCompletion} />
     } else if (setup) {
       component = <GameSetup onCreation={this.onCreation} />
     } else {
@@ -56,5 +63,3 @@ class App extends React.Component {
 
   }
 }
-
-export default withStyles(styles)(App);

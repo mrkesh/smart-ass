@@ -1,8 +1,8 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { calculateScore } from '../../util/scorebuilder';
+import { calculateScore } from '../../util/scoreutil';
 import Paper from '@material-ui/core/Paper';
-import CurrentCard from '../current-card/current-card';
+import CurrentCard from '../../component/current-card/current-card';
 import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
@@ -17,7 +17,7 @@ const styles = theme => ({
   }
 });
 
-class CurrentGame extends React.Component {
+class CurrentGameScreen extends React.Component {
   
   constructor(props) {
     super(props);
@@ -28,14 +28,32 @@ class CurrentGame extends React.Component {
     };
   }
 
+  componentWillUnmount() {
+    this.setState({
+      index: 0,
+      score: 0,
+      streak: 0
+    });
+  }
+
   nextCard = () => {
-    this.setState({index: this.state.index + 1})
+
+    let length = this.props.game.cards.length;
+    if (this.state.index === length-1 ) {
+      this.props.onCompletion(this.state.score);
+    } else {
+      this.setState({
+        index: this.state.index + 1,
+        streak: 0
+      });
+    }
   };
   
   handleAnswer = (answer, time) => {
 
     let { index, score, streak } = this.state;
     const card = this.props.game.cards[index];
+    const numCards = this.props.game.cards.length;
     
     if (card.answer === answer) {
       streak++;
@@ -44,11 +62,15 @@ class CurrentGame extends React.Component {
       streak = 0;
     }
 
-    this.setState({
-      index: index + 1,
-      score,
-      streak
-    });
+    if (this.state.index === numCards-1 ) {
+      this.props.onCompletion(this.state.score);
+    } else {
+      this.setState({
+        index: index + 1,
+        score,
+        streak
+      });
+    }
   };
 
   render() {
@@ -80,4 +102,4 @@ class CurrentGame extends React.Component {
   }
 }
 
-export default withStyles(styles)(CurrentGame);
+export default withStyles(styles)(CurrentGameScreen);
