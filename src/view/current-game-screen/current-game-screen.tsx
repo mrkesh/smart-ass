@@ -1,25 +1,39 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { calculateScore } from '../../util/scoreutil';
+import { Theme, withStyles } from '@material-ui/core/styles';
+import { calculateScore } from '../../util/scoreutil'
+import Game from '../../model/game';
+import GameCard from '../../model/gamecard';
 import Paper from '@material-ui/core/Paper';
 import CurrentCard from '../../component/current-card/current-card';
 import Typography from '@material-ui/core/Typography';
 
-const styles = theme => ({
+const styles = (theme: Theme) => ({
   paper: {
     marginLeft: 'auto',
     marginRight: 'auto',
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     width: '800px'
   },
   score: {
-    padding: theme.spacing.unit
+    padding: theme.spacing(1)
   }
 });
 
-class CurrentGameScreen extends React.Component {
+interface CurrentGameProps {
+  classes: any,
+  game: Game,
+  onCompletion: (completed: number) => void
+}
+
+interface CurrentGameState {
+  index: number,
+  score: number,
+  streak: number
+}
+
+class CurrentGameScreen extends React.Component<CurrentGameProps, CurrentGameState> {
   
-  constructor(props) {
+  constructor(props: CurrentGameProps) {
     super(props);
     this.state = {
       index: 0,
@@ -49,10 +63,10 @@ class CurrentGameScreen extends React.Component {
     }
   };
   
-  handleAnswer = (answer, time) => {
+  handleAnswer = (answer: string, time: number) => {
 
     let { index, score, streak } = this.state;
-    const card = this.props.game.cards[index];
+    const card: GameCard = this.props.game.cards[index];
     const numCards = this.props.game.cards.length;
     
     if (card.answer === answer) {

@@ -2,13 +2,14 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 module.exports = {
-  entry: path.join(__dirname,'src','index.js'),
+  entry: path.join(__dirname,'src','index.tsx'),
   output: {
     path: path.join(__dirname,'docs'),
     filename: 'index.bundle.js'
   },
   mode: process.env.NODE_ENV || 'development',
   resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
     modules: [path.resolve(__dirname, 'src'), 'node_modules']
   },
   devServer: {
@@ -19,7 +20,7 @@ module.exports = {
       {
         // this is so that we can compile any React,
         // ES6 and above into normal ES5 syntax
-        test: /\.(js|jsx)$/,
+        test: /\.(jsx?|tsx?)$/,
         // we do not want anything from node_modules to be compiled
         exclude: /node_modules/,
         use: ['babel-loader']

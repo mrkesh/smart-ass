@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "lib": ["es6", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "pretty": true,
+    "target": "es5",
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false
+  },
+  "include": [
+    "src"
+  ]
+}

@@ -1,25 +1,35 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { Theme, withStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 
-const styles = theme => ({
+const styles = (theme: Theme) => ({
   root: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     flexGrow: 1
   },
 });
 
-class Countdown extends React.Component {
+interface CountdownProps {
+  classes: any,
+  duration: number,
+  elapsed: number,
+}
 
-  constructor(props) {
+interface CountdownState {
+  completed: number
+}
+
+class Countdown extends React.Component<CountdownProps, CountdownState> {
+
+  constructor(props: CountdownProps) {
     super(props);
     this.state = {
       completed: 0
     };
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: CountdownProps, state: CountdownState) {
     return { completed: (props.elapsed / props.duration) * 100 };
   }
 

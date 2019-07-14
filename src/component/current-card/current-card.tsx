@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { Theme, withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Countdown from '../countdown/countdown';
@@ -7,38 +7,57 @@ import deepOrange from '@material-ui/core/colors/deepOrange';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import GameCard from '../../model/gamecard';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 
-const styles = theme => ({
+const styles = (theme: Theme) => ({
   avatar: {
-    width: theme.spacing.unit * 4,
-    height: theme.spacing.unit * 4,
+    width: theme.spacing(4),
+    height: theme.spacing(4),
     backgroundColor: deepPurple[500],
-    fontSize: theme.spacing.unit * 2,
+    fontSize: theme.spacing(2),
     '&.selected': {
       backgroundColor: deepOrange[500]
     }
   },
   btn: {
     display: 'block',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing(1)
   }
 });
 
-const QuestionMap = {
+const QuestionMap: { [key: number]: string } = {
   0: 'A',
   1: 'B',
   2: 'C',
   3: 'D'
 };
 
-class CurrentCard extends React.Component {
+interface CurrentCardProps {
+  classes: any,
+  card: GameCard,
+  onAnswer: (answer: string, time: number) => void,
+  onDone: () => void,
+  index: number,
+}
+
+interface CurrentCardState {
+  number: number,
+  selectedIndex: number | null,
+  elapsedTime: number,
+  timeToAnswer: number,
+  value: any
+}
+
+class CurrentCard extends React.Component<CurrentCardProps, CurrentCardState> {
+
+  timer: NodeJS.Timeout;
   
-  constructor(props) {
+  constructor(props: CurrentCardProps) {
     super(props);
     this.state = {
       number: this.props.index + 1,
@@ -49,7 +68,7 @@ class CurrentCard extends React.Component {
     }
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: CurrentCardProps, state: CurrentCardState) {
     return { number: props.index + 1 };
   }
 
@@ -72,7 +91,7 @@ class CurrentCard extends React.Component {
     }
   };
 
-  handleListItemClick = (event, index, choice) => {
+  handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number, choice: any) => {
     this.setState({ 
       selectedIndex: index,
       value: choice

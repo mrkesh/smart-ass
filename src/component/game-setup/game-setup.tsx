@@ -1,42 +1,47 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { Theme, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import DifficultyEnum from '../../model/difficultyenum';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Paper from '@material-ui/core/Paper';
 import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
+import RadioGroup, { RadioGroupProps } from '@material-ui/core/RadioGroup';
 import Typography from '@material-ui/core/Typography';
 
-const styles = theme => ({
+const styles = (theme: Theme) => ({
   btn: {
     display: 'block',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing(1)
   },
   paper: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     marginLeft: 'auto',
     marginRight: 'auto',
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     width: '400px'
   },
   form: {
-    margin: theme.spacing.unit * 3,
+    margin: theme.spacing(3)
   }
 });
 
-class GameSetup extends React.Component {
+interface GameSetupState {
+  value: DifficultyEnum
+}
+
+class GameSetup extends React.Component<any, GameSetupState> {
   
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = {
-      value: 'medium'
+      value: DifficultyEnum.MEDIUM
     }
   }
 
-  handleChange = event => {
-    this.setState({ value: event.target.value });
+  handleChange = (event: React.ChangeEvent<RadioGroupProps>) => {
+    this.setState({ value: (event.target.value as DifficultyEnum) });
   };
   
   render() {
@@ -55,9 +60,9 @@ class GameSetup extends React.Component {
               value={this.state.value}
               onChange={this.handleChange}
             >
-              <FormControlLabel value="easy" control={<Radio />} label="Easy" />
-              <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-              <FormControlLabel value="hard" control={<Radio />} label="Hard" />
+              <FormControlLabel value={DifficultyEnum.EASY} control={<Radio />} label="Easy" />
+              <FormControlLabel value={DifficultyEnum.MEDIUM} control={<Radio />} label="Medium" />
+              <FormControlLabel value={DifficultyEnum.HARD} control={<Radio />} label="Hard" />
             </RadioGroup>
           </FormControl>
           <Button

@@ -1,45 +1,53 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { Theme, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import HighScoresDialog from '../../component/high-scores-dialog/high-scores-dialog';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-const styles = theme => ({
+const styles = (theme: Theme) => ({
   btn: {
     display: 'block',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing(1)
   },
   paper: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     marginLeft: 'auto',
     marginRight: 'auto',
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     width: '400px'
   },
   typography: {
-    paddingBottom: theme.spacing.unit * 4,
+    paddingBottom: theme.spacing(4)
   }
 });
 
-class StartScreen extends React.Component {
+interface StartScreenProps {
+  classes: any,
+  onNewGame: () => void
+}
+
+interface StartScreenState {
+  open: boolean
+}
+
+class StartScreen extends React.Component<StartScreenProps, StartScreenState> {
   
-  constructor(props) {
+  constructor(props: StartScreenProps) {
     super(props);
     this.state = {
       open: false
     }
   }
 
-  handleClick = event => {
-    this.props.setup = true;
+  handleClick = (event: Event) => {
   };
 
   handleClose = () => {
     this.setState({ open: false });
   };
 
-  handleHighScores = event => {
+  handleHighScores = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     this.setState({ open: true });
   };
   
